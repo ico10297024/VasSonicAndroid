@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "28.0.3"
+    defaultConfig {
+        applicationId "com.tencent.sonic"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 3
+        versionName "3.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //标识是否使用sonic进行测试，0用普通的WebView，1用Sonic
+            buildConfigField "int", "SONIC", "0"
+            //标识是否开启自动化测试流程，0关闭，大于0则开启，开启后app将自动跳转，跳转页面，1内网基金改版2内网快审快贷3外网快审快贷4网络地址
+            buildConfigField "int", "AUTOTEST", "0"
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    // compile sdk from jcenter
+//     compile 'com.tencent.sonic:sdk:3.0.0'
+
+    // compile sonic-sdk from local path
+     api project(path: ':sonic')
+
+    api 'com.android.support:appcompat-v7:26.+'
+//    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    api 'com.android.support:design:26.+'
+    testImplementation 'junit:junit:4.12'
+}
